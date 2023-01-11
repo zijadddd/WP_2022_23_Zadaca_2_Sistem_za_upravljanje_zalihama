@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const Korisnici = sequelize.define(
-        'Korisnici',
+    const Users = sequelize.define(
+        'Users',
         {
             username: {
                 type: DataTypes.STRING(50),
@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            freezeTableName: true, // Da ne bi stavljao s na kraju imena tabele npr. korisnicis
+            freezeTableName: true, // Da ne bi stavljao s na kraju imena tabele npr. Userss
         }
     );
 
-    return Korisnici;
+    return Users;
 };

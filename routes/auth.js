@@ -2,23 +2,18 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
-const { Korisnici } = require('../models');
-const { Zaposlenici } = require('../models');
-const {
-    registrujZaposlenikaValidator,
-} = require('../validators/zaposlenici.js');
-const { loginKorisnikaValidator } = require('../validators/korisnici.js');
+const { Users } = require('../models');
+const { Employees } = require('../models');
+const { registerEmployeeValidator } = require('../validators/employees.js');
+const { loginUserValidator } = require('../validators/users.js');
 const { validationResult } = require('express-validator');
-const { authMiddleware } = require('../middlewares/auth-middleware');
+const { authAdminMiddleware } = require('../middlewares/auth-middleware');
 
 router.post(
     '/register',
-    authMiddleware,
-    registrujZaposlenikaValidator,
+    authAdminMiddleware,
+    registerEmployeeValidator,
     async (req, res) => {
-        const ulogaKorisnika = req.params.uloga;
-        if (ulogaKorisnika != 'Admin') return res.status(401).json();
-
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json(errors.errors[0]);
 
@@ -36,7 +31,7 @@ router.post(
         let username = ime.toLowerCase() + '_' + prezime.toLowerCase();
         let hash = await bcrypt.hash(sifra, 10);
 
-        const zaposlenik = await Zaposlenici.create({
+        const zaposlenik = await Employees.create({
             ime: ime,
             prezime: prezime,
             broj_telefona: broj_telefona,
@@ -46,7 +41,7 @@ router.post(
             datum_otkaza: datum_otkaza,
         });
 
-        await Korisnici.create({
+        await Users.create({
             username: username,
             password: hash,
             uloga: uloga,
@@ -56,7 +51,7 @@ router.post(
     }
 );
 
-router.post('/login', loginKorisnikaValidator, async (req, res) => {
+router.post('/login', loginUserValidator, async (req, res) => {
     const { username, password } = req.body;
     const errors = validationResult(req);
 
@@ -64,15 +59,15 @@ router.post('/login', loginKorisnikaValidator, async (req, res) => {
         return res.status(401).json();
     }
 
-    const korisnik = await Korisnici.findOne({ where: { username: username } });
-    const isPasswordValid = await bcrypt.compare(password, korisnik.password);
+    const user = await Users.findOne({ where: { username: username } });
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isPasswordValid) {
         const token = sign(
             {
-                id: korisnik.id,
-                username: korisnik.username,
-                uloga: korisnik.uloga,
+                id: user.id,
+                username: user.username,
+                uloga: user.uloga,
             },
             process.env.SECRET
         );

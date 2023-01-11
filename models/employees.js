@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const Zaposlenici = sequelize.define(
-        'Zaposlenici',
+    const Employees = sequelize.define(
+        'Employees',
         {
             ime: {
                 type: DataTypes.STRING(50),
@@ -32,12 +32,12 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            freezeTableName: true, // Da ne bi stavljao s na kraju imena tabele npr. zaposlenicis
+            freezeTableName: true, // Da ne bi stavljao s na kraju imena tabele npr. Employeess
         }
     );
 
-    Zaposlenici.associate = (models) => {
-        Zaposlenici.hasOne(models.Korisnici, {
+    Employees.associate = (models) => {
+        Employees.hasOne(models.Users, {
             onDelete: 'cascade',
             foreignKey: {
                 name: 'zaposlenikId',
@@ -45,5 +45,5 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
-    return Zaposlenici;
+    return Employees;
 };
