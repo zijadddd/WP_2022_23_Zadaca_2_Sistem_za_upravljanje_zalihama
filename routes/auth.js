@@ -59,24 +59,29 @@ router.post('/login', loginUserValidator, async (req, res) => {
         return res.status(401).json();
     }
 
-    const user = await Users.findOne({ where: { username: username } });
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    try {
+        const user = await Users.findOne({ where: { username: username } });
+        if (user == null) throw 'User not exist in database!';
 
-    if (isPasswordValid) {
-        const token = sign(
-            {
-                id: user.id,
-                username: user.username,
-                uloga: user.uloga,
-            },
-            process.env.SECRET
-        );
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (isPasswordValid) {
+            const token = sign(
+                {
+                    id: user.id,
+                    username: user.username,
+                    uloga: user.uloga,
+                },
+                process.env.SECRET
+            );
 
-        return res.status(200).json({
-            accessToken: token,
-        });
+            return res.status(200).json({
+                accessToken: token,
+            });
+        }
+        return res.status(401).json();
+    } catch (err) {
+        return res.status(400).json(err);
     }
-    return res.status(401).json();
 });
 
 module.exports = router;

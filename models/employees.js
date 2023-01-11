@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            freezeTableName: true, // Da ne bi stavljao s na kraju imena tabele npr. Employeess
+            freezeTableName: true,
         }
     );
 

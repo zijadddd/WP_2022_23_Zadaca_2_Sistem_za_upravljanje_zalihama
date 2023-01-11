@@ -8,6 +8,8 @@ const db = require('./models');
 
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
+const userRoutes = require('./routes/user-routes');
+app.use('/api/user', userRoutes);
 
 db.sequelize.sync().then(() => {
     app.listen(3001, () => {
