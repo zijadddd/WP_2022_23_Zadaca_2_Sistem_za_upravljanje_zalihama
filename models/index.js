@@ -47,3 +47,5 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+// UNZE PTF SI WP 2022/2023 :: ZIJAD DOGLOD

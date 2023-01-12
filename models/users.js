@@ -26,3 +26,5 @@ module.exports = (sequelize, DataTypes) => {
 
     return Users;
 };
+
+// UNZE PTF SI WP 2022/2023 :: ZIJAD DOGLOD

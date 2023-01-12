@@ -16,3 +16,5 @@ db.sequelize.sync().then(() => {
         console.log('Aplikacija pokrenuta');
     });
 });
+
+// UNZE PTF SI WP 2022/2023 :: ZIJAD DOGLOD
