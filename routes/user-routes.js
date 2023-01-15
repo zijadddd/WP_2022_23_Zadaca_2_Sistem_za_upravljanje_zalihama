@@ -45,7 +45,7 @@ router.post('/changeuserdata/:id', authAdminMiddleware, async (req, res) => {
         });
 
         if (employee == null || user == null)
-            throw 'User not exist in database!';
+            throw 'The user does not exist in the database';
 
         if (ime != null) employee.ime = ime;
         if (prezime != null) employee.prezime = prezime;

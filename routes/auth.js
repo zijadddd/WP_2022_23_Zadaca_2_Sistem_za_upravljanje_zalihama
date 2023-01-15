@@ -61,7 +61,17 @@ router.post('/login', loginUserValidator, async (req, res) => {
 
     try {
         const user = await Users.findOne({ where: { username: username } });
+        const employee = await Employees.findOne({
+            where: { id: user.zaposlenikId },
+        });
+
         if (user == null) throw 'User not exist in database!';
+        if (employee.datum_otkaza != null)
+            return res
+                .status(401)
+                .json(
+                    `User with username ${user.username} is no longer an Employee.`
+                );
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (isPasswordValid) {
