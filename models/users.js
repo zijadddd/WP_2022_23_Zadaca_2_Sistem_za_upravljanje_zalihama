@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            uloga: {
+            role: {
                 type: DataTypes.STRING(10),
                 allowNull: false,
             },
-            zaposlenikId: {
+            employeeId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },

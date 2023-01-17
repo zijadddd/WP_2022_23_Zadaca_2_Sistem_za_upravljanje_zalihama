@@ -11,7 +11,9 @@ app.use('/api/auth', authRoutes);
 const userRoutes = require('./routes/user-routes');
 app.use('/api/user', userRoutes);
 const supplierRoutes = require('./routes/suppliers-routes');
-app.use('api/supplier', supplierRoutes);
+app.use('/api/suppliers', supplierRoutes);
+const rawMaterials = require('./routes/raw-materials-routes');
+app.use('/api/rawmaterials', rawMaterials);
 
 db.sequelize.sync().then(() => {
     app.listen(3001, () => {

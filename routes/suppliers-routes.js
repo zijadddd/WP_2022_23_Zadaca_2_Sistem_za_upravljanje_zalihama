@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Suppliers } = require('../models');
 const { validationResult } = require('express-validator');
-const { addNewSupplier } = require('../validators/suppliers');
+const { addNewSupplier } = require('../validators/suppliers.js');
 const { authAllUsersMiddleware } = require('../middlewares/auth-middleware');
 
 router.post(
@@ -17,25 +17,36 @@ router.post(
             name,
             uid,
             vat,
-            phone_number,
-            contact_person,
-            email_address,
-            start_date,
-            end_date,
+            phoneNumber,
+            contactPerson,
+            emailAddress,
+            startDate,
+            endDate,
         } = req.body;
 
-        const supplier = await Suppliers.create({
-            name: name,
-            uid: uid,
-            vat: vat,
-            phone_number: phone_number,
-            contact_person: contact_person,
-            email_address: email_address,
-            start_date: start_date,
-            end_date,
-        });
-
-        return res.status(200).json(supplier);
+        if (endDate === 'null') {
+            await Suppliers.create({
+                name: name,
+                uid: uid,
+                vat: vat,
+                phoneNumber: phoneNumber,
+                contactPerson: contactPerson,
+                emailAddress: emailAddress,
+                startDate: startDate,
+            });
+        } else {
+            await Suppliers.create({
+                name: name,
+                uid: uid,
+                vat: vat,
+                phoneNumber: phoneNumber,
+                contactPerson: contactPerson,
+                emailAddress: emailAddress,
+                startDate: startDate,
+                endDate: endDate,
+            });
+        }
+        return res.status(200).json(`Supplier ${name} added successfully.`);
     }
 );
 
@@ -49,11 +60,11 @@ router.post(
             name,
             uid,
             vat,
-            phone_number,
-            contact_person,
-            email_address,
-            start_date,
-            end_date,
+            phoneNumber,
+            contactPerson,
+            emailAddress,
+            startDate,
+            endDate,
         } = req.body;
 
         try {
@@ -65,12 +76,11 @@ router.post(
             if (name != null) supplier.name = name;
             if (uid != null) supplier.uid = uid;
             if (vat != null) supplier.vat = vat;
-            if (phone_number != null) supplier.phone_number = phone_number;
-            if (contact_person != null)
-                supplier.contact_person = contact_person;
-            if (email_address != null) supplier.email_address = email_address;
-            if (start_date != null) supplier.start_date = start_date;
-            if (end_date != null) supplier.end_date = end_date;
+            if (phoneNumber != null) supplier.phoneNumber = phoneNumber;
+            if (contactPerson != null) supplier.contactPerson = contactPerson;
+            if (emailAddress != null) supplier.emailAddress = emailAddress;
+            if (startDate != null) supplier.startDate = startDate;
+            if (endDate != null) supplier.endDate = endDate;
 
             await supplier.save();
 
@@ -84,7 +94,7 @@ router.post(
 router.get('/getallsuppliers', authAllUsersMiddleware, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json(errors.errors[0]);
-    const suppliers = Suppliers.findAll();
+    const suppliers = await Suppliers.findAll();
     return res.status(200).json(suppliers);
 });
 

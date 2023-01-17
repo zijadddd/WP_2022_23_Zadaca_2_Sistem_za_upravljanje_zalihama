@@ -6,11 +6,10 @@ const authAdminMiddleware = async (req, res, next) => {
     try {
         var payload = await verify(token, process.env.SECRET);
         req.user = payload;
-        if (req.user.uloga !== 'Admin')
-            return res.status(401).json('You are not authorised.');
+        if (req.user.role !== 'Admin') throw 'You are not authorised.';
         next();
     } catch (err) {
-        return res.status(401).json();
+        return res.status(401).json(err);
     }
 };
 
@@ -20,11 +19,11 @@ const authAllUsersMiddleware = async (req, res, next) => {
     try {
         var payload = await verify(token, process.env.SECRET);
         req.user = payload;
-        if (req.user.uloga !== 'Admin' || req.user.uloga !== 'Zaposlenik')
-            return res.status(401).json('You are not authorised.');
+        if (req.user.role !== 'Admin')
+            if (req.user.uloga !== 'Employee') throw 'You are not authorised.';
         next();
     } catch (err) {
-        return res.status(401).json();
+        return res.status(401).json(err);
     }
 };
 

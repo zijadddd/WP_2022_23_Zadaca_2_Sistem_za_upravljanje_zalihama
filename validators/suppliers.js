@@ -13,19 +13,16 @@ exports.addNewSupplier = [
     check('name').notEmpty().withMessage(SUPPLIER_NAME_REQUIRED).bail(),
     check('uid').notEmpty().withMessage(SUPPLIER_UID_REQUIRED).bail(),
     check('vat').notEmpty().withMessage(SUPPLIER_VAT_REQUIRED).bail(),
-    check('phone_number')
+    check('phoneNumber')
         .notEmpty()
         .withMessage(SUPPLIER_PHONE_NUMBER_REQUIRED)
         .bail(),
-    check('contact_person')
+    check('contactPerson')
         .notEmpty()
         .withMessage(SUPPLIER_CONTACT_PERSON)
         .bail(),
-    check('email_address')
-        .notEmpty()
-        .withMessage(SUPPLIER_EMAIL_ADDRESS)
-        .bail(),
-    check('start_date').notEmpty().withMessage(SUPPLIER_START_DATE).bail(),
+    check('emailAddress').notEmpty().withMessage(SUPPLIER_EMAIL_ADDRESS).bail(),
+    check('startDate').notEmpty().withMessage(SUPPLIER_START_DATE).bail(),
     (req, res, next) => {
         next();
     },

@@ -11,25 +11,28 @@ const {
 } = require('../constants/validators/employees-constants');
 
 exports.registerEmployeeValidator = [
-    check('ime').notEmpty().withMessage(EMPLOYEE_FIRSTNAME_REQUIRED).bail(),
-    check('prezime').notEmpty().withMessage(EMPLOYEE_LASTNAME_REQUIRED).bail(),
-    check('broj_telefona')
+    check('firstName')
+        .notEmpty()
+        .withMessage(EMPLOYEE_FIRSTNAME_REQUIRED)
+        .bail(),
+    check('lastName').notEmpty().withMessage(EMPLOYEE_LASTNAME_REQUIRED).bail(),
+    check('phoneNumber')
         .notEmpty()
         .withMessage(EMPLOYEE_PHONE_NUMBER_REQUIRED)
         .bail(),
-    check('adresa').notEmpty().withMessage(EMPLOYEE_ADDRESS_REQUIRED).bail(),
-    check('email_adresa')
+    check('address').notEmpty().withMessage(EMPLOYEE_ADDRESS_REQUIRED).bail(),
+    check('emailAddress')
         .notEmpty()
         .withMessage(EMPLOYEE_EMAIL_ADDRESS_REQUIRED)
         .custom(async (value) => {
             const employee = await Employees.findOne({
-                where: { email_adresa: value },
+                where: { emailAddress: value },
             });
             if (employee != null)
                 return Promise.reject(EMPLOYEE_EMAIL_ALREADY_EXISTS(value));
         })
         .bail(),
-    check('datum_zaposlenja')
+    check('dateOfEmployment')
         .notEmpty()
         .withMessage(EMPLOYEE_DATE_OF_EMPLOYMENT_REQUIRED)
         .bail(),

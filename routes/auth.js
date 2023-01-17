@@ -18,34 +18,34 @@ router.post(
         if (!errors.isEmpty()) return res.status(400).json(errors.errors[0]);
 
         const {
-            ime,
-            prezime,
-            broj_telefona,
-            adresa,
-            email_adresa,
-            datum_zaposlenja,
-            datum_otkaza,
-            sifra,
-            uloga,
+            firstName,
+            lastName,
+            phoneNumber,
+            address,
+            emailAddress,
+            dateOfEmployment,
+            dateOfCancellation,
+            password,
+            role,
         } = req.body;
-        let username = ime.toLowerCase() + '_' + prezime.toLowerCase();
-        let hash = await bcrypt.hash(sifra, 10);
+        let username = firstName.toLowerCase() + '_' + lastName.toLowerCase();
+        let hash = await bcrypt.hash(password, 10);
 
-        const zaposlenik = await Employees.create({
-            ime: ime,
-            prezime: prezime,
-            broj_telefona: broj_telefona,
-            adresa: adresa,
-            email_adresa: email_adresa,
-            datum_zaposlenja: datum_zaposlenja,
-            datum_otkaza: datum_otkaza,
+        const employee = await Employees.create({
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            address: address,
+            emailAddress: emailAddress,
+            dateOfEmployment: dateOfEmployment,
+            dateOfCancellation: dateOfCancellation,
         });
 
         await Users.create({
             username: username,
             password: hash,
-            uloga: uloga,
-            zaposlenikId: zaposlenik.id,
+            role: role,
+            employeeId: employee.id,
         });
         return res.status(201).json();
     }
@@ -62,11 +62,11 @@ router.post('/login', loginUserValidator, async (req, res) => {
     try {
         const user = await Users.findOne({ where: { username: username } });
         const employee = await Employees.findOne({
-            where: { id: user.zaposlenikId },
+            where: { id: user.employeeId },
         });
 
         if (user == null) throw 'User not exist in database!';
-        if (employee.datum_otkaza != null)
+        if (employee.dateOfCancellation != null)
             return res
                 .status(401)
                 .json(
@@ -79,7 +79,7 @@ router.post('/login', loginUserValidator, async (req, res) => {
                 {
                     id: user.id,
                     username: user.username,
-                    uloga: user.uloga,
+                    role: user.role,
                 },
                 process.env.SECRET
             );

@@ -2,31 +2,31 @@ module.exports = (sequelize, DataTypes) => {
     const Employees = sequelize.define(
         'Employees',
         {
-            ime: {
+            firstName: {
                 type: DataTypes.STRING(50),
                 allowNull: false,
             },
-            prezime: {
+            lastName: {
                 type: DataTypes.STRING(50),
                 allowNull: false,
             },
-            broj_telefona: {
+            phoneNumber: {
                 type: DataTypes.STRING(16),
                 allowNull: false,
             },
-            adresa: {
+            address: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
             },
-            email_adresa: {
+            emailAddress: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
             },
-            datum_zaposlenja: {
+            dateOfEmployment: {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            datum_otkaza: {
+            datumOfCancellation: {
                 type: DataTypes.DATEONLY,
                 allowNull: true,
             },
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         Employees.hasOne(models.Users, {
             onDelete: 'cascade',
             foreignKey: {
-                name: 'zaposlenikId',
+                name: 'employeeId',
             },
         });
     };

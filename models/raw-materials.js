@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(50),
                 allowNull: false,
             },
-            min_amount: {
+            minAmount: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT.UNSIGNED,
                 allowNull: false,
             },
-            unit_of_measurement: {
+            unitOfMeasurement: {
                 type: DataTypes.STRING(20),
                 allowNull: false,
             },
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
-            supplier_id: {
+            supplierId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
@@ -31,15 +31,6 @@ module.exports = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
-
-    RawMaterials.associate = (models) => {
-        RawMaterials.hasOne(models.Suppliers, {
-            onDelete: 'cascade',
-            foreignKey: {
-                name: 'id',
-            },
-        });
-    };
 
     return RawMaterials;
 };

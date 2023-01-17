@@ -14,23 +14,23 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.FLOAT.UNSIGNED,
                 allowNull: false,
             },
-            phone_number: {
+            phoneNumber: {
                 type: DataTypes.STRING(16),
                 allowNull: false,
             },
-            contact_person: {
+            contactPerson: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
             },
-            email_address: {
+            emailAddress: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
             },
-            start_date: {
+            startDate: {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            end_date: {
+            endDate: {
                 type: DataTypes.DATEONLY,
                 allowNull: true,
             },
@@ -39,6 +39,15 @@ module.exports = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
+
+    Suppliers.associate = (models) => {
+        Suppliers.hasMany(models.RawMaterials, {
+            onDelete: 'cascade',
+            foreignKey: {
+                name: 'supplierId',
+            },
+        });
+    };
 
     return Suppliers;
 };

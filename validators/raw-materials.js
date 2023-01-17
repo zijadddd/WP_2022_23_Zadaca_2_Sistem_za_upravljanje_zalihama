@@ -10,16 +10,17 @@ const {
 
 exports.addNewRawMaterial = [
     check('name').notEmpty().withMessage(RAW_MATERIALS_NAME_REQUIRED).bail(),
-    check('min_amount')
-        .notEmpty.withMessage(RAW_MATERIALS_MIN_AMOUNT_REQUIRED)
+    check('minAmount')
+        .notEmpty()
+        .withMessage(RAW_MATERIALS_MIN_AMOUNT_REQUIRED)
         .bail(),
     check('price').notEmpty().withMessage(RAW_MATERIALS_PRICE_REQUIRED).bail(),
-    check('unit_of_measurement')
+    check('unitOfMeasurement')
         .notEmpty()
         .withMessage(RAW_MATERIALS_UNIT_OF_MEASUREMENT_REQUIRED)
         .bail(),
     check('usable').notEmpty().withMessage(RAw_MATERIALS_USABLE).bail(),
-    check('supplier_id')
+    check('supplierId')
         .notEmpty()
         .withMessage(RAW_MATERIAL_SUPPLIER_ID_REQUIRED)
         .bail(),

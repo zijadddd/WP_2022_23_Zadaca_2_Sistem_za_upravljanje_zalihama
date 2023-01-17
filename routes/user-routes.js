@@ -8,18 +8,24 @@ const { changeUserPasswordValidator } = require('../validators/users.js');
 const { authAdminMiddleware } = require('../middlewares/auth-middleware');
 
 router.post(
-    '/changepassword',
+    '/changepassword/:id',
     authAdminMiddleware,
     changeUserPasswordValidator,
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json(errors.errors[0]);
-        const { id, password } = req.body;
+        const { password } = req.body;
         const hash = await bcrypt.hash(password, 10);
-        const user = await Users.findOne({ where: { zaposlenikId: id } });
+        const user = await Users.findOne({
+            where: { employeeId: req.params.id },
+        });
+        if (user == null)
+            return res
+                .status(400)
+                .json('The user does not exist in the database!');
         user.password = hash;
         await user.save();
-        return res.status(204).json();
+        return res.status(204).json('Password changed successfully');
     }
 );
 
@@ -27,42 +33,45 @@ router.post('/changeuserdata/:id', authAdminMiddleware, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json(errors.errors[0]);
     const {
-        ime,
-        prezime,
-        broj_telefona,
-        adresa,
-        email_adresa,
-        datum_zaposlenja,
-        datum_otkaza,
-        sifra,
-        uloga,
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        emailAddress,
+        dateOfEmployment,
+        dateOfCancellation,
+        password,
+        role,
     } = req.body;
 
     try {
         const employee = await Employees.findByPk(req.params.id);
         const user = await Users.findOne({
-            where: { zaposlenikId: employee.id },
+            where: { employeeId: employee.id },
         });
 
         if (employee == null || user == null)
-            throw 'The user does not exist in the database';
+            throw 'The user does not exist in the database!';
 
-        if (ime != null) employee.ime = ime;
-        if (prezime != null) employee.prezime = prezime;
+        if (firstName != null) employee.firstName = firstName;
+        if (lastName != null) employee.lastName = lastName;
         let username =
-            employee.ime.toLowerCase() + '_' + employee.prezime.toLowerCase();
-        if (broj_telefona != null) employee.broj_telefona = broj_telefona;
-        if (adresa != null) employee.adresa = adresa;
-        if (email_adresa != null) employee.email_adresa = email_adresa;
-        if (datum_zaposlenja != null)
-            employee.datum_zaposlenja = datum_zaposlenja;
-        if (datum_otkaza != null) employee.datum_otkaza = datum_otkaza;
+            employee.firstName.toLowerCase() +
+            '_' +
+            employee.lastName.toLowerCase();
+        if (phoneNumber != null) employee.phoneNumber = phoneNumber;
+        if (address != null) employee.address = address;
+        if (emailAddress != null) employee.emailAddress = emailAddress;
+        if (dateOfEmployment != null)
+            employee.dateOfEmployment = dateOfEmployment;
+        if (dateOfCancellation != null)
+            employee.dateOfCancellation = dateOfCancellation;
         if (username != null) user.username = username;
-        if (sifra != null) {
-            let hash = await bcrypt.hash(sifra, 10);
-            user.sifra = hash;
+        if (password != null) {
+            let hash = await bcrypt.hash(password, 10);
+            user.password = hash;
         }
-        if (uloga != null) user.uloga = uloga;
+        if (role != null) user.role = role;
 
         await employee.save();
         await user.save();
