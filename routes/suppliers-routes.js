@@ -46,7 +46,7 @@ router.post(
                 endDate: endDate,
             });
         }
-        return res.status(200).json(`Supplier ${name} added successfully.`);
+        return res.status(201).json(`Supplier ${name} added successfully.`);
     }
 );
 

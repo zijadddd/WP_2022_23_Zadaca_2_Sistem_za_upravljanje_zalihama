@@ -61,7 +61,7 @@ router.post(
             const rawMaterial = await RawMaterials.findByPk(req.params.id);
 
             if (rawMaterial == null)
-                throw 'The supplier does not exist in the database';
+                throw 'The raw material does not exist in the database';
 
             if (name != null) rawMaterial.name = name;
             if (minAmount != null) rawMaterial.minAmount = minAmount;

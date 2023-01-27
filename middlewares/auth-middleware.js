@@ -20,7 +20,7 @@ const authAllUsersMiddleware = async (req, res, next) => {
         var payload = await verify(token, process.env.SECRET);
         req.user = payload;
         if (req.user.role !== 'Admin')
-            if (req.user.uloga !== 'Employee') throw 'You are not authorised.';
+            if (req.user.role !== 'Employee') throw 'You are not authorised.';
         next();
     } catch (err) {
         return res.status(401).json(err);

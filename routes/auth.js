@@ -47,7 +47,9 @@ router.post(
             role: role,
             employeeId: employee.id,
         });
-        return res.status(201).json();
+        return res
+            .status(201)
+            .json(`Employee ${firstName} ${lastName} added successfully.`);
     }
 );
 
@@ -59,39 +61,36 @@ router.post('/login', loginUserValidator, async (req, res) => {
         return res.status(401).json();
     }
 
-    try {
-        const user = await Users.findOne({ where: { username: username } });
-        const employee = await Employees.findOne({
-            where: { id: user.employeeId },
-        });
+    const user = await Users.findOne({ where: { username: username } });
+    if (user == null)
+        return res.status(400).json('User not exist in database!');
 
-        if (user == null) throw 'User not exist in database!';
-        if (employee.dateOfCancellation != null)
-            return res
-                .status(401)
-                .json(
-                    `User with username ${user.username} is no longer an Employee.`
-                );
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (isPasswordValid) {
-            const token = sign(
-                {
-                    id: user.id,
-                    username: user.username,
-                    role: user.role,
-                },
-                process.env.SECRET
+    const employee = await Employees.findOne({
+        where: { id: user.employeeId },
+    });
+    if (employee.dateOfCancellation != null)
+        return res
+            .status(401)
+            .json(
+                `User with username ${user.username} is no longer an Employee.`
             );
 
-            return res.status(200).json({
-                accessToken: token,
-            });
-        }
-        return res.status(401).json();
-    } catch (err) {
-        return res.status(400).json(err);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (isPasswordValid) {
+        const token = sign(
+            {
+                id: user.id,
+                username: user.username,
+                role: user.role,
+            },
+            process.env.SECRET
+        );
+
+        return res.status(200).json({
+            accessToken: token,
+        });
     }
+    return res.status(401).json();
 });
 
 module.exports = router;

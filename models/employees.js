@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            datumOfCancellation: {
+            dateOfCancellation: {
                 type: DataTypes.DATEONLY,
                 allowNull: true,
             },
