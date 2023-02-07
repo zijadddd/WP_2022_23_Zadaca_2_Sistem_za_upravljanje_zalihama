@@ -25,7 +25,7 @@ router.post(
                 .json('The user does not exist in the database!');
         user.password = hash;
         await user.save();
-        return res.status(204).json('Password changed successfully');
+        return res.status(201).json('Password changed successfully');
     }
 );
 
