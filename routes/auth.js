@@ -87,6 +87,8 @@ router.post('/login', loginUserValidator, async (req, res) => {
         );
 
         return res.status(200).json({
+            username: user.username,
+            role: user.role,
             accessToken: token,
         });
     }

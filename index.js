@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv').config();
-
+const cors = require('cors');
 app.use(express.json());
+app.use(cors({ origin: '*' }));
 
 const db = require('./models');
 
