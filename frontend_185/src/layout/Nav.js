@@ -45,6 +45,33 @@ const Nav = () => {
                                         {authState.username} - {authState.role}
                                     </p>
                                 </li>
+                                <li className="nav-item">
+                                    <Link
+                                        className="nav-link active text-dark"
+                                        aria-current="page"
+                                        to="/employees"
+                                    >
+                                        Employees
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link
+                                        className="nav-link active text-dark"
+                                        aria-current="page"
+                                        to="/rawmaterials"
+                                    >
+                                        Raw Materials
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link
+                                        className="nav-link active text-dark"
+                                        aria-current="page"
+                                        to="/suppliers"
+                                    >
+                                        Suppliers
+                                    </Link>
+                                </li>
                             </>
                         ) : (
                             <>

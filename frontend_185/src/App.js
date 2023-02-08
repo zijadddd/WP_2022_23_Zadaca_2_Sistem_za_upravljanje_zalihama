@@ -26,6 +26,15 @@ function App() {
                     <Routes>
                         <Route path="/home" element={<Home />} />
                     </Routes>
+                    <Routes>
+                        <Route path="/employees" element={<Home />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/rawmaterials" element={<Home />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/suppliers" element={<Home />} />
+                    </Routes>
                 </Router>
             </div>
         </AuthContext.Provider>

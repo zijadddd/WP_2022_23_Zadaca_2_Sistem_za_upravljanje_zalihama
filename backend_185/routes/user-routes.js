@@ -82,6 +82,13 @@ router.post('/changeuserdata/:id', authAdminMiddleware, async (req, res) => {
     }
 });
 
+router.get('/getallemployees', authAdminMiddleware, async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json(errors.errors[0]);
+    const employees = await Employees.findAll();
+    return res.status(200).json(employees);
+});
+
 module.exports = router;
 
 // UNZE PTF SI WP 2022/2023 :: ZIJAD DOGLOD
